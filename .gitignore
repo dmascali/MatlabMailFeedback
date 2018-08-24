@@ -1,0 +1,5 @@
+*.txt
+*.m~
+*.asv
+test*.m
+sendsetup_dm.m
