@@ -1,7 +1,7 @@
 function sendsetup
 %Configuration file for setting up the SMTP mail server. 
 %
-% You have to specifiy the sender email and its password before using 
+% You have to specify the sender email and its password before using 
 % "sendstatus" or "sendmsg". The SMTP service preferences are already configured
 % for a GMAIL account. If you wish to use a different mail service, change
 % them accordingly. 

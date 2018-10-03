@@ -21,8 +21,8 @@ A set of functions for receiving mail feedback from Matlab.
  
  - _to_ is either a string specifying a single address, or a cell array of
    addresses.
- - _verbose_ (optional): [0 1 2]. Selecet the "verbosity" of the attachements in case of failure:  
-           - 0: no attachement  
+ - _verbose_ (optional): [0 1 2]. Selecet the "verbosity" of the attachments in case of failure:  
+           - 0: no attachment  
            - 1: sends just the file that caused the error (default)  
            - 2: sends all the stacked files  
 

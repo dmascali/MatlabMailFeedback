@@ -29,7 +29,7 @@ function sendstatus(to,verbose)
 
 global SENDSTATUS_STATUS
 
-if isempty(SENDSTATUS_STATUS) %first occurance of the current function.
+if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % On function termination (both properly or via a CTRL+C 
@@ -67,7 +67,7 @@ if isempty(SENDSTATUS_STATUS) %first occurance of the current function.
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %this is critical to avoid an infinite loop! It also 
-    %prevents any subsequenct (unwanted) occurance of sendstatus 
+    %prevents any subsequent (unwanted) occurrence of sendstatus 
     SENDSTATUS_STATUS = 1;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
@@ -162,7 +162,6 @@ if isempty(SENDSTATUS_STATUS) %first occurance of the current function.
         % we have to remove the last two stacks (or more, if sendstatus was
         % placed in a subfunction) that are useless.
         % Unfortunately ME is read only, so we can't use rethrow(ME);
-        index = find(arrayfun(@(n) strcmp(ME.stack(n).name,currFun),1:numel(ME.stack)));
         errorStruct.identifier = ME.identifier;
         errorStruct.message = ME.message;
         errorStruct.stack = ME.stack(1:indx-1,1);
@@ -175,7 +174,7 @@ if isempty(SENDSTATUS_STATUS) %first occurance of the current function.
         errorStruct.stack(1:end) = [];
         error(errorStruct);
     end
-else %second occurance of the current function
+else %second occurrence of the current function
     % skip and return to the main function
     return
 end

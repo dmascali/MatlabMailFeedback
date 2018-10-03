@@ -1,5 +1,5 @@
 function sendmsg(to,subject,message,attachments)
-%SENDMSG uses matlab SENDMAIL function to send mails pre-compiled with a set 
+%SENDMSG uses matlab SENDMAIL function to send mail pre-compiled with a set 
 % of useful info. The input arguments are the same of SENDMAIL:
 %
 % sendmail(TO,SUBJECT,MESSAGE,ATTACHMENTS) sends an e-mail.  TO is either a
