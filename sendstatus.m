@@ -73,12 +73,14 @@ if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % The core of the function:
+    tic;
     try 
         evalin('caller',command_str);
         exit_status = 0; %SUCCESS
     catch ME
         exit_status = 1; %ERROR FOUND
     end
+    t = toc; t = readsec(t);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
     if exit_status   %ERROR FOUND
@@ -118,14 +120,18 @@ if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
                         'Daniele Mascali, PhD\n',...
                         '"Enrico Fermi" Centre\n',...
                         'MARBILab'],ST(1).name,verbose);   
+    
+    running_time = sprintf(['Elapsed time: ',t,'\n']);
                     
     if exit_status   %ERROR FOUND
         message_final{1} = info_str;
         message_final{2} = error_message;
-        message_final{3} = sign_str;
+        message_final{3} = running_time;
+        message_final{4} = sign_str;   
     else            %SUCCESS
         message_final{1} = info_str;
-        message_final{2} = sign_str; 
+        message_final{2} = running_time;
+        message_final{3} = sign_str; 
     end        
     
     if exit_status   %ERROR FOUND
