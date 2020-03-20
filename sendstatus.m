@@ -27,7 +27,9 @@ function sendstatus(to,verbose)
 % within a try/catch statment so that the exit status of the calling
 % script/function can be sent by mail.
 
-global SENDSTATUS_STATUS SENDSTATUS_TOC_TIME %toc time is a variable for sendmsg
+global SENDSTATUS_STATUS SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME 
+                         %toc time is a variable for sendmsg
+                         %beacon time is a variable for sendbeacon
 
 if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
     
@@ -190,8 +192,7 @@ end
 
 function CleanGlobalVar
 %this is critical for future (wanted) calls to this function
-%disp('Cleaning up global variable');
 clearvars -global SENDSTATUS_STATUS
-clearvars -global SENDSTATUS_TOC_TIME
+clearvars -global SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME 
 return
 end
