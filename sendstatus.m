@@ -27,9 +27,10 @@ function sendstatus(to,verbose)
 % within a try/catch statment so that the exit status of the calling
 % script/function can be sent by mail.
 
-global SENDSTATUS_STATUS SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME 
+global SENDSTATUS_STATUS SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME SENDSTATUS_ERROR_MSG 
                          %toc time is a variable for sendmsg
                          %beacon time is a variable for sendbeacon
+                         %error msg for an additional mail with extra info
 
 if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
     
@@ -160,6 +161,12 @@ if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
                 end
                 sendmail(to,subject,message_final,attachments)
         end
+        % if SENDSTATUS_ERROR_MSG has been used, send a second
+        % mail with user specific info:
+        if ~isempty(SENDSTATUS_ERROR_MSG)
+            subject = ['<',callingFunction.name,'> FAILURE extra info'];
+            sendmail(to,subject,SENDSTATUS_ERROR_MSG)
+        end
     else %SUCCESS, no attachment
         sendmail(to,subject,message_final)
     end
@@ -193,6 +200,6 @@ end
 function CleanGlobalVar
 %this is critical for future (wanted) calls to this function
 clearvars -global SENDSTATUS_STATUS
-clearvars -global SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME 
+clearvars -global SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME SENDSTATUS_ERROR_MSG 
 return
 end
