@@ -49,19 +49,6 @@ if isempty(message); message = ''; end
 sendsetup
 %--------------------------------------------------------------------------
 
-ST = dbstack('-completenames');
-MainFunction = ST(end);
-if ~strcmpi(MainFunction.name,mfilename)
-    % put the calling function as prefix of the subject
-    subject = ['<',MainFunction.name,'> ',subject];
-    %and create a info string in the body message
-    info_str = sprintf(['by (sub)function: ',ST(2).name,' (at line: ',num2str(ST(2).line),')\n(main function path: ',MainFunction.file,')\n']);
-else
-    % don't modify the subject.
-    %and empty info string in the body message
-    info_str = '';
-end
-
 if ispc
     username = getenv('username');
     computername = getenv('computername');
@@ -70,7 +57,26 @@ elseif isunix || ismac   %not tested on mac
     [~, computername] = system('hostname');
     computername = strtrim(computername);
 end
-                
+
+ST = dbstack('-completenames');
+MainFunction = ST(end);
+if ~strcmpi(MainFunction.name,mfilename)
+    if strcmpi(ST(2).name,'sendbeacon') %
+        % put the machine as prefix of the subject
+        subject = ['beacon: ',computername];
+    else
+        % put the calling function as prefix of the subject
+        subject = ['<',MainFunction.name,'> ',subject];
+    end
+    %and create a info string in the body message
+    info_str = sprintf(['by (sub)function: ',ST(2).name,' (at line: ',num2str(ST(2).line),')\n(main function path: ',MainFunction.file,')\n']);
+else
+    % don't modify the subject.
+    %and empty info string in the body message
+    info_str = '';
+end
+
+               
 info_str = sprintf(['Dear %s,\n',...
                            'this message has been generated from: %s\n',...
                            '%s'],username,computername,info_str);

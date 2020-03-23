@@ -31,7 +31,7 @@ if isempty(SENDSTATUS_BEACON_TIME) %first occurrence of the current function.
 end
 
 if toc >= SENDSTATUS_BEACON_TIME 
-    sendmsg(to,'beacon',sprintf(['So far so good!\nBeacon signal generated every ',readsec(deltaTime*60)]));
+    sendmsg(to,'',sprintf(['So far so good!\nBeacon signal generated every ',readsec(deltaTime*60)]));
     % increment the time:
     SENDSTATUS_BEACON_TIME = SENDSTATUS_BEACON_TIME + deltaTime *60;
 end
