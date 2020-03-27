@@ -24,13 +24,13 @@ function sendbeacon(to,deltaTime)
 %__________________________________________________________________________
 %Daniele Mascali - danielemascali@gmail.com
 
-global SENDSTATUS_BEACON_TIME % It's the time required to send the next beacon
+global SENDSTATUS_TIC_TIMES SENDSTATUS_BEACON_TIME % It's the time required to send the next beacon
 
 if isempty(SENDSTATUS_BEACON_TIME) %first occurrence of the current function.
     SENDSTATUS_BEACON_TIME = deltaTime *60; %convert minutes to seconds 
 end
 
-if toc >= SENDSTATUS_BEACON_TIME 
+if toc(SENDSTATUS_TIC_TIMES(1)) >= SENDSTATUS_BEACON_TIME 
     sendmsg(to,'',sprintf(['So far so good!\nBeacon signal generated every ',readsec(deltaTime*60)]));
     % increment the time:
     SENDSTATUS_BEACON_TIME = SENDSTATUS_BEACON_TIME + deltaTime *60;

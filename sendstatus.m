@@ -27,12 +27,11 @@ function sendstatus(to,verbose)
 % within a try/catch statment so that the exit status of the calling
 % script/function can be sent by mail.
 
-global SENDSTATUS_STATUS SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME SENDSTATUS_ERROR_MSG 
-                         %toc time is a variable for sendmsg
+global SENDSTATUS_TIC_TIMES SENDSTATUS_BEACON_TIME SENDSTATUS_ERROR_MSG 
                          %beacon time is a variable for sendbeacon
                          %error msg for an additional mail with extra info
 
-if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
+if isempty(SENDSTATUS_TIC_TIMES) %first occurrence of the current function.
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % On function termination (both properly or via a CTRL+C 
@@ -69,21 +68,24 @@ if isempty(SENDSTATUS_STATUS) %first occurrence of the current function.
     command_str = deblank(historyText(end,:));  %take the last entry
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %this is critical to avoid an infinite loop! It also 
-    %prevents any subsequent (unwanted) occurrence of sendstatus 
-    SENDSTATUS_STATUS = 1;
+    %This variable has a double function
+    % 1) to skip the second call to sendstatus (see the if at the beginning) 
+    %    [NB:this is critical to avoid an infinite loop! and it also 
+    %    prevents any subsequent (unwanted) occurrence of sendstatus]
+    % 2) to store the starting time
+    SENDSTATUS_TIC_TIMES = tic;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % The core of the function:
-    tic;
     try 
         evalin('caller',command_str);
         exit_status = 0; %SUCCESS
     catch ME
         exit_status = 1; %ERROR FOUND
     end
-    t = toc; t = readsec(t);
+    t = toc(SENDSTATUS_TIC_TIMES(1)); %the row selector is needed as sendmsg can append a second tic time.
+    t = readsec(t);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
     if exit_status   %ERROR FOUND
@@ -199,7 +201,7 @@ end
 
 function CleanGlobalVar
 %this is critical for future (wanted) calls to this function
-clearvars -global SENDSTATUS_STATUS
-clearvars -global SENDSTATUS_TOC_TIME SENDSTATUS_BEACON_TIME SENDSTATUS_ERROR_MSG 
+clearvars -global SENDSTATUS_TIC_TIMES
+clearvars -global SENDSTATUS_BEACON_TIME SENDSTATUS_ERROR_MSG 
 return
 end
